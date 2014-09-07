@@ -1,0 +1,47 @@
+<?php if ($this->pageCount == 1) return; ?>
+<?php if ($this->pageCount): ?>
+<ul class="paginationControl pagination">
+<!-- Previous page link -->
+<?php if (isset($this->previous)): ?>
+    <li>
+        <a href="<?php echo ($this->current < 11) ? 1 : $this->current - 10; ?>">
+            &laquo;
+        </a>
+    </li>
+<?php else: ?>
+    <li class="disabled">
+        <a href="<?php echo ($this->current < 11) ? 1 : $this->current - 10; ?>">
+            &laquo;
+        </a>
+    </li>
+<?php endif; ?>
+
+<!-- Numbered page links -->
+<?php foreach ($this->pagesInRange as $page): ?>
+  <?php if ($page != $this->current): ?>
+  <li>
+    <a href="<?php echo $page; ?>">
+        <?php echo $page; ?>
+    </a>
+  </li>
+  <?php else: ?>
+  <li class="active"><span><?php echo $page; ?><span class="sr-only">(current)</span></span></li>
+  <?php endif; ?>
+<?php endforeach; ?>
+
+<!-- Next page link -->
+<?php if (isset($this->next)): ?>
+    <li>
+      <a href="<?php echo ($this->current > $this->pageCount - 10) ? $this->pageCount : $this->current + 10; ?>">
+        &raquo;
+      </a>
+    </li>
+<?php else: ?>
+    <li class="disabled">
+      <a href="<?php echo ($this->current > $this->pageCount - 10) ? $this->pageCount : $this->current + 10; ?>">
+        &raquo;
+      </a>
+    </li>
+<?php endif; ?>
+</ul>
+<?php endif; ?>

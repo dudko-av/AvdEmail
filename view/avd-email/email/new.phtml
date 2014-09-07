@@ -1,0 +1,89 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Новое письмо
+    </div>
+    <div class="panel-body" id="new-letter-container">
+<?php
+if ($this->formSuccess): ?>
+        <div class="alert alert-success" role="alert">
+            Ваше письмо успешно отправлено :)
+            <a href="/email/new" class="alert-link">Написать новое письмо</a>
+        </div>
+    </div>
+</div>
+<?php return; endif; ?>
+
+<?php
+$this->letterForm->setAttribute('class', 'form-horizontal');
+$this->letterForm->prepare();
+    
+echo $this->form()->openTag($this->letterForm);
+
+echo '<div class="form-group">';
+    echo $this->formLabel($this->letterForm->get('letter')->get('recipient')
+        ->setLabelAttributes(array('class' => 'col-sm-2 control-label')));
+    echo '<div class="col-sm-10">';
+        echo $this->formEmail($this->letterForm->get('letter')->get('recipient'));
+        echo $this->formElementErrors()
+            ->setMessageOpenFormat('<ul class="list-group error-msg" style="margin: 2px 0;"><li class="list-group-item list-group-item-danger">')
+            ->setMessageSeparatorString('</li><li class="list-group-item list-group-item-danger">')
+            ->setMessageCloseString('</li></ul>')
+            ->render($this->letterForm->get('letter')->get('recipient'));
+    echo '</div>';
+echo '</div>';
+
+echo '<div class="form-group">';
+    echo $this->formLabel($this->letterForm->get('letter')->get('subject')
+        ->setLabelAttributes(array('class' => 'col-sm-2 control-label')));
+    echo '<div class="col-sm-10">';
+        echo $this->formElement($this->letterForm->get('letter')->get('subject'));
+        echo $this->formElementErrors($this->letterForm->get('letter')->get('subject'), array(
+            'class' => 'list-unstyled'
+        ));
+    echo '</div>';
+echo '</div>';
+
+echo '<div class="form-group">';
+    echo $this->formLabel($this->letterForm->get('letter')->get('text')
+        ->setLabelAttributes(array('class' => 'col-sm-2 control-label')));
+    echo '<div class="col-sm-10">';
+        echo $this->formElement($this->letterForm->get('letter')->get('text'));
+        echo $this->formElementErrors($this->letterForm->get('letter')->get('text'), array(
+            'class' => 'list-unstyled'
+        ));
+    echo '</div>';
+echo '</div>';
+
+echo '<div class="form-group">';
+    echo '<div class="col-md-offset-2 col-md-10">';
+        echo $this->formReset($this->letterForm->get('reset'));
+        echo $this->formSubmit($this->letterForm->get('submit'));
+    echo '</div>';
+    echo '<div class="col-md-2">';
+        
+    echo '</div>';
+echo '</div>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';
+echo '</div>';
+?>
+<script>
+var newLetterContainer = $('#new-letter-container');
+
+$(newLetterContainer).on('submit', '#letter-form', function(e) {
+    e.preventDefault();
+    $.post('/email/new', $(this).serializeArray(), function(data) {
+        $(newLetterContainer).html($(data).find("#new-letter-container").html());
+        $('.error-msg').prev().one('click', function(e) {
+            $(this).next().remove();
+        })
+        $(newLetterContainer).find(':reset').one('click', function(e){
+            $('.error-msg').remove();
+            $('.form-control').attr('value', '');
+            $('textarea.form-control').empty();
+        });
+    });
+});
+</script>

@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Просмотр письма</h3>
+  </div>
+  <div class="panel-body">
+  <?php if(!$this->letter): ?>
+        <div class="alert alert-danger" role="alert">Письмо не найдено :(</div>
+    </div>
+</div> 
+  <?php return; endif; ?>
+    <article>
+        <h4>Тема : <?php echo $this->letter->getSubject(); ?></h4>
+        <p>Письмо для <span style="color: #428bca;"><?php echo $this->letter->getRecipient(); ?></span></p>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <p><?php echo $this->letter->getText(); ?></p>
+          </div>
+        </div>
+        <footer>
+            <time datetime="<?php echo $this->letter->getDate()->format('Y-m-d h:i'); ?>">
+                <?php echo $this->letter->getDate()->format('Y-m-d h:i'); ?>
+            </time>
+        </footer>
+    </article>
+  </div>
+</div>
